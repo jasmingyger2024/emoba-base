@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "542657865485",
+    "project_id": "emoba-ii-firebase-example",
+    "storage_bucket": "emoba-ii-firebase-example.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:542657865485:android:25b549e16f6cdd41a03244",
+        "android_client_info": {
+          "package_name": "fhnw.emoba"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "542657865485-ajrd90rrogae4fb45j52hlh5b6u9sqcq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAzjUZkVafCAqFPDR5N0OkxmuavTv1UzmY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "542657865485-ajrd90rrogae4fb45j52hlh5b6u9sqcq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
