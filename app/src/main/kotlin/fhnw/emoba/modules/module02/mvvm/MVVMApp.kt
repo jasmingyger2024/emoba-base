@@ -14,6 +14,6 @@ object MVVMApp: AppBase<MVVMModel>() {
 
     @Composable
     override fun AppUi(viewModel: MVVMModel) {
-        MVVMUi() //Todo: die View braucht ein ViewModel
+        MVVMUi(viewModel) //Todo: die View braucht ein ViewModel
     }
 }

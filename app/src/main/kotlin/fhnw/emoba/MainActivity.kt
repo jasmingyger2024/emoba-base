@@ -4,6 +4,8 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import fhnw.emoba.modules.module01.helloemoba.HelloEmobaApp
+import fhnw.emoba.modules.module02.basics.ComposeBasicsApp
+import fhnw.emoba.modules.module02.mvvm.MVVMApp
 import fhnw.emoba.modules.module09.uguu.UguuApp
 
 
@@ -13,8 +15,11 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // module01
-          app = HelloEmobaApp
+        // WO2
+        // app = MVVMApp
+        app = ComposeBasicsApp
+
+        // WO3
 
         setContent {
             app.Content()

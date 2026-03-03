@@ -21,19 +21,21 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import fhnw.emoba.modules.module02.mvvm.viewmodel.MVVMModel
 
 @Composable
-fun MVVMUi() {  //Todo: Jeder View braucht ein ViewModel
-    Scaffold(topBar                       = { Bar() },
-             floatingActionButton         = { FAB() },
+fun MVVMUi(viewModel: MVVMModel) {  //Todo: Jeder View braucht ein ViewModel
+    Scaffold(topBar                       = { Bar(viewModel) },
+             floatingActionButton         = { FAB(viewModel) },
              floatingActionButtonPosition = FabPosition.End,
-             content                      = { Body(it) })
+             content                      = { Body(viewModel, it) })
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun Bar() { //Todo: Jeder View braucht ein ViewModel
-    TopAppBar(title  = { Text("to be replaced") },
+private fun Bar(viewModel: MVVMModel) { //Todo: Jeder View braucht ein ViewModel
+    TopAppBar(title  = { Text("${viewModel.title} - ${viewModel.counter}") }, // String Interpolation: mit ${} wird der code der da ausgeführt wird in den String geschrieben. so kann man mehere Dinge zusammenhängen
               colors = TopAppBarDefaults.topAppBarColors(containerColor    = MaterialTheme.colorScheme.primaryContainer,
                                                          titleContentColor = MaterialTheme.colorScheme.onPrimaryContainer
                   )
@@ -41,24 +43,33 @@ private fun Bar() { //Todo: Jeder View braucht ein ViewModel
 }
 
 @Composable
-private fun Body(paddingValues: PaddingValues) { //Todo: Jeder View braucht ein ViewModel
-    Box(modifier = Modifier.padding(paddingValues)
-                           .padding(top    = 100.dp,
-                                    bottom = 100.dp)
-                           .fillMaxSize()) {
-        Text(text     = "--",                               //Todo: Informationen werden im ViewModel verwaltet
-             fontSize = 156.sp,
-             modifier = Modifier.align(Alignment.TopCenter)
-        )
-        Button(onClick  = { },                              //Todo: Aktionen verändern das ViewModel und rufen dafür Funktionen des ViewModels auf
-               modifier = Modifier.align(Alignment.BottomCenter)) {
-            Text(text = "Click me")
+private fun Body(viewModel: MVVMModel, paddingValues: PaddingValues) { //Todo: Jeder View braucht ein ViewModel
+    with(viewModel) { // so kann man sich untern viewModel. sparen
+        Box(
+            modifier = Modifier.padding(paddingValues)
+                .padding(
+                    top = 100.dp,
+                    bottom = 100.dp
+                )
+                .fillMaxSize()
+        ) {
+            Text(
+                text = counter.toString(),                               //Todo: Informationen werden im ViewModel verwaltet
+                fontSize = 156.sp,
+                modifier = Modifier.align(Alignment.TopCenter)
+            )
+            Button(
+                onClick = { increase() },                              //Todo: Aktionen verändern das ViewModel und rufen dafür Funktionen des ViewModels auf
+                modifier = Modifier.align(Alignment.BottomCenter)
+            ) {
+                Text(text = "Click me")
+            }
         }
     }
 }
 
 @Composable
-private fun FAB() { //Todo: Jeder View braucht ein ViewModel
-    FloatingActionButton(onClick = {}) //Todo:  Geeignete Funktion im ViewModel implementieren und hier aufrufen.
+private fun FAB(viewModel: MVVMModel) { //Todo: Jeder View braucht ein ViewModel // Floating Action Button
+    FloatingActionButton(onClick = { viewModel.reset() }) //Todo:  Geeignete Funktion im ViewModel implementieren und hier aufrufen.
     { Icon(Icons.Filled.Clear, "Clear") }
 }
