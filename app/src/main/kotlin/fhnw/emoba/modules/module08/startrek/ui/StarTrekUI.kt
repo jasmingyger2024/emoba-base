@@ -24,6 +24,8 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.constraintlayout.compose.Dimension
 import fhnw.emoba.R
 import fhnw.emoba.modules.module08.startrek.ui.theme.StarTrekAppTheme
 import fhnw.emoba.modules.module08.startrek.viewmodel.StarTrekModel
@@ -67,31 +69,57 @@ private fun Body(
     paddingValues: PaddingValues
 ) {
     //Todo: Column durch ConstraintLayout ersetzen
-    Column(
+    ConstraintLayout (
         modifier = Modifier
             .padding(paddingValues)
             .fillMaxSize()
             .background(Color(0xFFDDFFFF))
     ) {
-        Msg(messageKirk, Modifier)
+        val (message, response, img1, img2, slider ) = createRefs()
+        val margin = 16.dp
 
-        Msg(reponseScotty, Modifier)
+        Msg(messageKirk, Modifier.constrainAs(message) {
+            top.linkTo(parent.top, margin)
+            start.linkTo(parent.start, margin)
+        })
+
+        Msg(reponseScotty, Modifier.constrainAs(response) {
+            top.linkTo(message.bottom, margin)
+            end.linkTo(parent.end, margin)
+        })
 
         Panini(R.drawable.scotty, transporterStatus, reversed = false,
-            modifier = Modifier)
+            modifier = Modifier.constrainAs(img1) {
+                top.linkTo(response.bottom, margin)
+                bottom.linkTo(slider.top, margin)
+                start.linkTo(parent.start, margin)
+                end.linkTo(parent.end, margin)
+                width = Dimension.fillToConstraints
+                height = Dimension.fillToConstraints
+            })
 
         Panini(R.drawable.star_trek_crew, transporterStatus,
-            modifier = Modifier)
+            modifier = Modifier.constrainAs(img2) {
+                centerTo(img1)
+                width = Dimension.fillToConstraints
+                height = Dimension.fillToConstraints
+            })
 
         Transporter(
             transporterStatus = transporterStatus,
             onTransporterStatusChange = onTransporterStatusChange,
             modifier = Modifier
+                .constrainAs(slider) {
+                    start.linkTo(parent.start, margin)
+                    end.linkTo(parent.end, margin)
+                    bottom.linkTo(parent.bottom)
+                    width = Dimension.percent(0.8f)
+                }
                 .fillMaxWidth(0.8f)
-                .align(Alignment.CenterHorizontally)
         )
     }
 }
+
 
 @Composable
 private fun Msg(text: String, modifier: Modifier) {

@@ -5,6 +5,10 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.grid.rememberLazyGridState
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -19,6 +23,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
@@ -26,6 +31,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
+import androidx.lifecycle.viewmodel.compose.viewModel
+import fhnw.emoba.modules.module08.phrasomat.data.generator
 import fhnw.emoba.modules.module08.phrasomat.viewmodel.PhrasOMatModel
 
 @Composable
@@ -33,7 +40,7 @@ fun PhrasOMatUI(viewModel: PhrasOMatModel) {
     MaterialTheme(colorScheme = lightColorScheme(primary = Color(0xFFCC6699))) {
         Scaffold(
             topBar = { Bar(viewModel.title) },
-            content = { Body(it) },
+            content = { paddingValues -> Body(viewModel, paddingValues = paddingValues) },
             floatingActionButton = { FAB() },
             floatingActionButtonPosition = FabPosition.Center,
         )
@@ -53,7 +60,7 @@ private fun Bar(title: String) {
 }
 
 @Composable
-private fun Body(paddingValues: PaddingValues) {
+private fun Body(viewModel : PhrasOMatModel, paddingValues: PaddingValues) {
     ConstraintLayout(Modifier
         .padding(paddingValues)
         .fillMaxSize()) {
@@ -63,7 +70,7 @@ private fun Body(paddingValues: PaddingValues) {
 
         //Todo 1: emptyList ersetzen
         PhrasesBox(
-            phrases = emptyList(),
+            phrases = viewModel.phrases,
             modifier = Modifier.constrainAs(phrasesBox) {
                 start.linkTo(parent.start, margin)
                 top.linkTo(parent.top, margin)
@@ -86,8 +93,19 @@ private fun PhrasesBox(phrases: List<String>, modifier: Modifier) {
         }
     }
     else {
-        // Todo 1: LazyColumn mit allen bisher erzeugten Phrasen
-        // SinglePhrase benutzen
+        val scrollState = rememberLazyListState()
+
+        LaunchedEffect(phrases.size) {
+            if (phrases.isNotEmpty()) {
+                scrollState.animateScrollToItem(phrases.lastIndex)
+            }
+        }
+
+        LazyColumn(state = scrollState, modifier = Modifier.shadow(2.dp)) {
+            items(phrases) { phrase ->
+                SinglePhrase(phrase)
+            }
+        }
     }
 }
 
@@ -105,6 +123,6 @@ private fun SinglePhrase(phrase: String) {
 
 @Composable
 private fun FAB() {
-    FloatingActionButton(onClick = {  })  //Todo: neue Phrase generieren lassen
+    FloatingActionButton(onClick = { generator.generatePhase() })  //Todo: neue Phrase generieren lassen
        { Icon(Icons.Filled.Add, "neue Phrase") }
 }

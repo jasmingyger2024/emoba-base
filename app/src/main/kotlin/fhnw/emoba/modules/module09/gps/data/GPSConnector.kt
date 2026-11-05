@@ -9,24 +9,6 @@ import com.google.android.gms.location.LocationServices
 
 
 /*
- Eintrag im AndroidManifest.xml
-
-     <!-- Zugriff auf den GPS Sensor -->
-     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-
-
- Dependency im build.gradle (emoba.app)
-   implementation(libs.play.services.location)
- im toml file:
-    unter [versions]:
-    playServicesLocation = "21.3.0"
-
-    unter [libraries]:
-    play-services-location = { module = "com.google.android.gms:play-services-location", version.ref = "playServicesLocation" }
-
- Emulator mit 'Google Play' verwenden
-
  Im Emulator
   - in emulator-settings die Location setzen
   - Google Maps aufrufen (braucht es zur Initialisierung bevor es in der App geht)

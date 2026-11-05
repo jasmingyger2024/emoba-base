@@ -29,8 +29,10 @@ fun CoordinatesUI(viewModel: CoordinatesModel){
                  content = { padding ->
                      Body(
                          latitude = viewModel.latitude,
+                         longitude = viewModel.longitude,
                          coordinates = viewModel.coordinates,
                          onLatitudeChanged = { viewModel.latitude = it },
+                         onLongitudeChanged = { viewModel.longitude = it },
                          onConvertClicked = viewModel::convert,
                          paddingValues = padding
                      )
@@ -51,8 +53,10 @@ private fun Bar(title: String) {
 @Composable
 private fun Body(
     latitude: Double,
+    longitude: Double,
     coordinates: String,
     onLatitudeChanged: (Double) -> Unit,
+    onLongitudeChanged: (Double) -> Unit,
     onConvertClicked: () -> Unit,
     paddingValues: PaddingValues
 ) {
@@ -63,8 +67,11 @@ private fun Body(
                verticalArrangement = Arrangement.spacedBy(20.dp))
         {
 
-            TextField(value         = "$latitude",
-                      onValueChange = { onLatitudeChanged(it.toDouble()) })
+            TextField(  value         = "$latitude",
+                        onValueChange = { onLatitudeChanged(it.toDouble()) })
+
+            TextField(  value         = "$longitude",
+                        onValueChange = { newText -> onLongitudeChanged(newText.toDouble()) }) // gleich wie oben aber anstatt mit it einfach mit einer variable
 
             
             Button(onClick = onConvertClicked)                  //Todo: Warum braucht onConvertClicked keine Parameter und keinen Rueckgabewert?

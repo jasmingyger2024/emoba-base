@@ -17,7 +17,7 @@ class MapModel : ViewModel() {
     var mapStyle: Style.Builder
 
     init {
-        //Map Style (Tiles) from openfreemap.org
+        //Map Style (Tiles) from openfreemap.org -> bildet die Karte ab
         val styleAttr: Style.Builder = Style.Builder().fromUri("https://tiles.openfreemap.org/styles/liberty")
         mapStyle = styleAttr
     }
@@ -33,5 +33,11 @@ class MapModel : ViewModel() {
 
     fun resetMapToBrugg(){
         //Todo: zoom in and center to show Brugg Campus
+        mapCameraPosition = CameraPosition(
+            target = brugg,
+            zoom = 15.0,
+            tilt = 0.0,
+            bearing = 0.0,
+        )
     }
 }

@@ -4,6 +4,9 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -15,6 +18,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.tooling.preview.Preview
+import fhnw.emoba.modules.module04.countries.data.Country
 import fhnw.emoba.modules.module04.countries.viewmodel.CountriesModel
 import java.util.Locale
 
@@ -51,7 +56,11 @@ private fun Body(viewModel: CountriesModel, paddingValues: PaddingValues) {
                                    .fillMaxSize(),
         contentAlignment = Alignment.Center){
 
-        Text("To be replaced")
+        LazyColumn {
+            items(viewModel.countries, key = {it.name}) {
+                CountryPane(country = it)
+            }
+        }
         
     //Todo: Verwenden Sie 'LazyColumn'
     // https://developer.android.com/reference/kotlin/androidx/compose/foundation/lazy/package-summary#lazycolumn
@@ -62,10 +71,12 @@ private fun Body(viewModel: CountriesModel, paddingValues: PaddingValues) {
 //  verwenden Sie 'Card'
 //  https://developer.android.com/reference/kotlin/androidx/compose/material/package-summary#card
 
-//@Composable
-//fun CountryPane(country: Country) {
-//
-//}
+@Composable
+fun CountryPane(country: Country) {
+    Card() {
+        Heading(country.name)
+    }
+}
 
 
 //Todo: verwenden Sie diese Funktion an geeigneter Stelle
@@ -91,9 +102,9 @@ private val CH = Locale.Builder().setLanguage("de").setRegion("CH").build()
 
 //Todo: Kommentare entfernen sobald Country und CountryPane vorhanden sind
 
-//@Preview(name = "Single Country Card")
-//@Composable
-//private fun Preview(){
-//    val lummerland = Country("Lummerland", 0.12, 5)
-//    CountryPane(lummerland)
-//}
+@Preview(name = "Single Country Card")
+@Composable
+private fun Preview(){
+    val lummerland = Country("Lummerland", 0.12, 5)
+    CountryPane(lummerland)
+}

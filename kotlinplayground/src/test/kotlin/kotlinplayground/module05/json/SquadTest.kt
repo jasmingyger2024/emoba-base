@@ -50,13 +50,13 @@ class SquadTest {
         
         //then
         with(squad) {
-//            assertEquals("Super hero squad", squadName)
-//            assertEquals("Metro City", homeTown)
-//            assertEquals(2016, formed)
-//            assertEquals("Super tower", secretBase)
-//            assertTrue(active)
-//            assertEquals(2, members.size)
-//            assertEquals("Molecule Man", members[0].name)
+            assertEquals("Super hero squad", squadName)
+            assertEquals("Metro City", homeTown)
+            assertEquals(2016, formed)
+            assertEquals("Super tower", secretBase)
+            assertTrue(active)
+            assertEquals(2, members.size)
+            assertEquals("Molecule Man", members[0].name)
         }
         
     }

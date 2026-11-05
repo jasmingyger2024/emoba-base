@@ -1,8 +1,10 @@
 package fhnw.emoba.modules.module04.beers.data
 
+import fhnw.emoba.R
+
 object Repository {
     //Todo: Beer implementieren, so dass die Kommentare entfernt werden koennen (ohne Compile-Fehler)
-    /*
+
    val beers = listOf(
         Beer(
             title = "Blonde Ale",
@@ -197,5 +199,5 @@ object Repository {
             link = "https://www.craftbeer.com/styles/vienna-style-lager"
         )
     )
-    */
+
 }

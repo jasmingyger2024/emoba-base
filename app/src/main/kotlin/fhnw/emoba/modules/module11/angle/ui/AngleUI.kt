@@ -20,6 +20,7 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush.Companion.linearGradient
 import androidx.compose.ui.graphics.Brush.Companion.radialGradient
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.drawscope.rotate
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
@@ -84,21 +85,22 @@ private fun AngleControl(angle: Float, onAngleChange: (Float) -> Unit, modifier:
                     // detectTapGestures und onPress verwenden
                     detectTapGestures(
                         onPress = { offset ->
-                            //fuer die Umrechnung der touchPosition auf den Winkel  'angleFromXY' verwenden
+                            onAngleChange(angleFromXY(canvasCenter, offset)) //fuer die Umrechnung der touchPosition auf den Winkel 'angleFromXY' verwenden
                         }
                     )
                 }
 
                 // Todo 2: den 'drag' in eine neue Winkelposition umsetzen
                 // https://developer.android.com/reference/kotlin/androidx/compose/foundation/gestures/package-summary#(androidx.compose.ui.input.pointer.PointerInputScope).detectDragGestures(kotlin.Function1,kotlin.Function0,kotlin.Function0,kotlin.Function2)
+
+                // detectDragGestures und onDrag verwenden
                 .pointerInput(Unit) {
                     detectDragGestures(
                         onDragStart = { offset -> delta = offset }, //Startpunkt merken
                         onDrag = { change, dragAmount ->
                             // dragAmount ist die Differenz zum letzten Drag-Event
-
-                            // Todo 2: dragAmount zum delta (Gesamtverschiebung seit dem DragStart) hinzuzaehlen
-                            // Todo 2: angle auf dem model setzen (angleFromXY verwenden)
+                            delta += dragAmount   // Todo 2: dragAmount zum delta (Gesamtverschiebung seit dem DragStart) hinzuzaehlen
+                            onAngleChange(angleFromXY(canvasCenter, delta))  // Todo 2: angle auf dem model setzen (angleFromXY verwenden)
                         }
                     )
                 },
@@ -139,12 +141,15 @@ private fun AngleControl(angle: Float, onAngleChange: (Float) -> Unit, modifier:
                 val indicatorHeight = size.width * 0.20f
                 val indicatorWidth = size.width * 0.01587302f
                 val indicatorOffset = Offset(center.x, size.width * 0.5f - innerRadius)
-                drawLine(
-                    color = Color(159, 159, 159),
-                    start = indicatorOffset,
-                    end = indicatorOffset + Offset(0f, indicatorHeight),
-                    strokeWidth = indicatorWidth
-                )
+
+                rotate(angle) {
+                    drawLine(
+                        color = Color(159, 159, 159),
+                        start = indicatorOffset,
+                        end = indicatorOffset + Offset(0f, indicatorHeight),
+                        strokeWidth = indicatorWidth
+                    )
+                }
 
                 drawCircle(
                     brush = innerShadow,
@@ -154,7 +159,7 @@ private fun AngleControl(angle: Float, onAngleChange: (Float) -> Unit, modifier:
 
         // DrawScope unterstuetzt noch nicht 'drawText', eine Moeglichkeit: der Text wird ausserhalb der Canvas erzeugt
         Text(
-            text = "?", // Todo 1: den aktuellen Winkel anzeigen
+            text = angle.asText(), // Todo 1: den aktuellen Winkel anzeigen
             color = Color(0xFFE0E0E0),
             fontSize = (canvasSize * 0.19148936).sp
         )

@@ -1,5 +1,8 @@
 package fhnw.emoba.modules.module04.beers.ui
 
+import android.graphics.Paint
+import androidx.annotation.DrawableRes
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -7,39 +10,51 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.BottomAppBar
+import androidx.compose.material3.Card
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconToggleButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.ModalNavigationDrawer
+import androidx.compose.material3.PrimaryTabRow
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Switch
+import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalUriHandler
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import fhnw.emoba.modules.module04.beers.data.Beer
 import fhnw.emoba.modules.module04.beers.ui.theme.BeersTheme
 import fhnw.emoba.modules.module04.beers.viewmodel.BeersAppModel
+import fhnw.emoba.modules.module04.beers.viewmodel.TabId
+import fhnw.emoba.modules.module04.countries.ui.CountryPane
 import kotlinx.coroutines.launch
 
 @Composable
 fun BeersAppUI(viewModel: BeersAppModel) {
     val drawerState = rememberDrawerState(DrawerValue.Closed)
 
-    BeersTheme(false) { //Todo: wie kann das umschaltbar gemacht werden?
+    BeersTheme(viewModel.darkTheme) { //Todo: wie kann das umschaltbar gemacht werden? - DONE
         ModalNavigationDrawer(
             drawerState = drawerState,
             drawerContent = {
@@ -73,7 +88,7 @@ private fun Bar(viewModel: BeersAppModel, drawerState: DrawerState) {
 @Composable
 private fun DrawerIcon(drawerState: DrawerState) {
     //Todo: Schauen Sie sich genau an wie der Drawer eingeblendet wird. Wir werden
-    // das noch haeufiger brauchen
+    // das noch haeufiger brauchen - DONE
     val scope = rememberCoroutineScope()
     IconButton(onClick = { scope.launch { drawerState.open() } }) {
         Icon(Icons.Filled.Menu, "Drawer öffnen")
@@ -84,6 +99,15 @@ private fun DrawerIcon(drawerState: DrawerState) {
 private fun Body(viewModel: BeersAppModel, paddingValues: PaddingValues) {
     with(viewModel) {
         //Todo: Visualisierung aller Beers. Verwenden Sie 'LazyColumn'  und 'BeerCard'
+        LazyColumn(
+            modifier = Modifier
+                .padding(paddingValues)
+        ) {
+            items(viewModel.filteredBeers, key = {it.title}) {
+                BeerCard(beer = it)
+            }
+        }
+
     }
 }
 
@@ -93,7 +117,16 @@ private fun TabNav(viewModel: BeersAppModel) {
         BottomAppBar(
             containerColor = MaterialTheme.colorScheme.background,
         ) {
-            //Todo: vier Tabs für light, mid, dark und all Beers
+            //Todo: vier Tabs für light, mid, dark und all Beers - DONE
+            PrimaryTabRow(selectedTabIndex = selectedTab.ordinal) {
+                for (tab in TabId.entries) {
+                    Tab(
+                        text = { Text(tab.title)},
+                        selected = tab == selectedTab,
+                        onClick = { selectedTab =  tab },
+                        )
+                }
+            }
         }
     }
 }
@@ -119,18 +152,39 @@ private fun Drawer(viewModel: BeersAppModel) {
         HorizontalDivider()
 
         //Todo: Fuegen Sie einen 'Switch' und entsprechenden 'Text' hinzu mit dem das Theme um
-        // geschaltet werden kann.
+        // geschaltet werden kann. - DONE
+        Row(
+            modifier = Modifier.padding(10.dp).fillMaxWidth(),
+            verticalAlignment     = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween,
+        ) {
+            Text(text = "Dark/ Light Theme")
 
+            with(viewModel) {
+                Switch(
+                    checked = darkTheme,
+                    onCheckedChange = { toggleTheme() }
+                )
+            }
+        }
         HorizontalDivider()
     }
 }
 
 
 //Todo: implementieren Sie die Funktion, die ein einzelnes Bier visualisiert
-//@Composable
-//private fun BeerCard(beer: Beer) {
-//
-//}
+@Composable
+private fun BeerCard(beer: Beer) {
+    Card(
+        modifier = Modifier.padding(15.dp)
+    ) {
+        BeerImage(beer, beer.imageId, beer.title)
+        Headline(beer.title)
+        SubTitle("Vote: " + beer.voteAverage + "/10")
+        Caption(beer.overview)
+        Link(beer.link)
+    }
+}
 
 
 
@@ -146,18 +200,18 @@ private fun Headline(text: String) {
 }
 
 @Composable
-private fun BeerImage() {
-    //Todo: was soll BeerImage bekommen?
-   // with(beer) {
+private fun BeerImage(beer: Beer, imageId: Int, title : String) {
+    //Todo: was soll BeerImage bekommen? - DONE
+   with(beer) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .background(Color.Black),
             horizontalArrangement = Arrangement.Center
         ) {
-           // Image(painterResource(imageId), title)
+           Image(painterResource(imageId), title)
         }
-    //    }
+    }
 }
 
 @Composable

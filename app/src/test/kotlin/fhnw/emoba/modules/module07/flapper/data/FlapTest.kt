@@ -1,5 +1,7 @@
 package fhnw.emoba.modules.module07.flapper.data
 
+import junit.framework.TestCase.assertEquals
+import org.json.JSONObject
 import org.junit.Test
 
 
@@ -7,7 +9,6 @@ internal class FlapTest {
 
     @Test
     fun testAll() {
-/*
         //given
         val sender  = "Grossvater"
         val message = "Wo ist das Heidi?"
@@ -22,7 +23,6 @@ internal class FlapTest {
         assertEquals(message, json.getString("message"))
         assertEquals(flap1, flap2)
 
-*/
     }
 
 }

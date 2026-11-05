@@ -11,15 +11,6 @@ import java.net.URL
 import java.nio.charset.StandardCharsets
 import javax.net.ssl.HttpsURLConnection
 
-/*
-
-Eintrag im AndroidManifest.xml
-
-    <!-- Zugriff auf's Internet -->
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-
-*/
 
 fun uploadBitmapToUguu(bitmap:    Bitmap,
                        onSuccess: (link: String) -> Unit,

@@ -58,6 +58,7 @@ private fun Body(viewModel: MapModel, paddingValues: PaddingValues) {
         Box(modifier = Modifier.padding(paddingValues)
             .fillMaxSize())
         {
+            // Map Composable
             MapLibre(
                 modifier = Modifier.fillMaxSize(),
                 uiSettings = UiSettings(
@@ -73,6 +74,10 @@ private fun Body(viewModel: MapModel, paddingValues: PaddingValues) {
                 )
                 //Todo: also set a marker pin to Brugg Campus - use a Symbol Composable and a red pin
 
+                Symbol(
+                    center = brugg,
+                    imageId = R.drawable.pinred
+                )
             }
         }
     }

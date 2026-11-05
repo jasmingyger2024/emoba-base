@@ -4,6 +4,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import fhnw.emoba.modules.module05.multiple_screens.ui.screens.AboutScreen
 import fhnw.emoba.modules.module05.multiple_screens.ui.screens.HomeScreen
+import fhnw.emoba.modules.module05.multiple_screens.ui.screens.Year1955Screen
+import fhnw.emoba.modules.module05.multiple_screens.ui.screens.Year2015Screen
 import fhnw.emoba.modules.module05.multiple_screens.viewmodel.MultipleScreensModel
 import fhnw.emoba.modules.module05.multiple_screens.viewmodel.ScreenId
 
